@@ -32,8 +32,6 @@ export class ApiError extends Error {
   }
 }
 
-let isRedirecting = false;
-
 export async function apiRequest<T>(
   path: string,
   options: { method?: string; body?: unknown; signal?: AbortSignal | undefined } = {},
@@ -55,11 +53,8 @@ export async function apiRequest<T>(
   });
 
   if (response.status === 401 || response.status === 403) {
-    if (!isRedirecting && typeof window !== "undefined") {
-      isRedirecting = true;
-      window.location.replace(AUTH_PORTAL_URL);
-    }
-    throw new ApiError(response.status, "Not authenticated");
+    if (typeof window !== "undefined") window.dispatchEvent(new Event(response.status === 401 ? "scholardesk:auth-required" : "scholardesk:access-denied"));
+    throw new ApiError(response.status, response.status === 401 ? "Sign in required" : "Access restricted");
   }
 
   if (!response.ok) {

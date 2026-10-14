@@ -20,7 +20,7 @@ export const Route = createFileRoute("/orders/$orderId/submit")({
         property: "og:description",
         content: "Upload your completed files and notes for the customer.",
       },
-    ],
+     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { property: "og:image", content: "https://scholardesk.pro/brand/og-image.png" }, { name: "twitter:image", content: "https://scholardesk.pro/brand/og-image.png" }],
   }),
   component: SubmitWork,
 });

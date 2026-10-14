@@ -11,11 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EarningsRouteImport } from './routes/earnings'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as AssignmentsIndexRouteImport } from './routes/assignments.index'
 import { Route as AssignmentsOrderIdRouteImport } from './routes/assignments.$orderId'
+import { Route as OrdersIndexRouteImport } from './routes/orders.index'
+import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
 import { Route as AssignmentsOrderIdSubmitRouteImport } from './routes/assignments.$orderId.submit'
+import { Route as OrdersOrderIdSubmitRouteImport } from './routes/orders.$orderId.submit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +31,21 @@ const IndexRoute = IndexRouteImport.update({
 const EarningsRoute = EarningsRouteImport.update({
   id: '/earnings',
   path: '/earnings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdersRoute = OrdersRouteImport.update({
@@ -47,75 +68,127 @@ const AssignmentsOrderIdRoute = AssignmentsOrderIdRouteImport.update({
   path: '/assignments/$orderId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrdersIndexRoute = OrdersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OrdersRoute,
+} as any)
+const OrdersOrderIdRoute = OrdersOrderIdRouteImport.update({
+  id: '/$orderId',
+  path: '/$orderId',
+  getParentRoute: () => OrdersRoute,
+} as any)
 const AssignmentsOrderIdSubmitRoute =
   AssignmentsOrderIdSubmitRouteImport.update({
     id: '/submit',
     path: '/submit',
     getParentRoute: () => AssignmentsOrderIdRoute,
   } as any)
+const OrdersOrderIdSubmitRoute = OrdersOrderIdSubmitRouteImport.update({
+  id: '/submit',
+  path: '/submit',
+  getParentRoute: () => OrdersOrderIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/earnings': typeof EarningsRoute
-  '/orders': typeof OrdersRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
+  '/orders': typeof OrdersRouteWithChildren
   '/profile': typeof ProfileRoute
   '/assignments/$orderId': typeof AssignmentsOrderIdRouteWithChildren
+  '/orders/$orderId': typeof OrdersOrderIdRouteWithChildren
   '/assignments/': typeof AssignmentsIndexRoute
+  '/orders/': typeof OrdersIndexRoute
   '/assignments/$orderId/submit': typeof AssignmentsOrderIdSubmitRoute
+  '/orders/$orderId/submit': typeof OrdersOrderIdSubmitRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/earnings': typeof EarningsRoute
-  '/orders': typeof OrdersRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
   '/assignments/$orderId': typeof AssignmentsOrderIdRouteWithChildren
+  '/orders/$orderId': typeof OrdersOrderIdRouteWithChildren
   '/assignments': typeof AssignmentsIndexRoute
+  '/orders': typeof OrdersIndexRoute
   '/assignments/$orderId/submit': typeof AssignmentsOrderIdSubmitRoute
+  '/orders/$orderId/submit': typeof OrdersOrderIdSubmitRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/earnings': typeof EarningsRoute
-  '/orders': typeof OrdersRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
+  '/orders': typeof OrdersRouteWithChildren
   '/profile': typeof ProfileRoute
   '/assignments/$orderId': typeof AssignmentsOrderIdRouteWithChildren
+  '/orders/$orderId': typeof OrdersOrderIdRouteWithChildren
   '/assignments/': typeof AssignmentsIndexRoute
+  '/orders/': typeof OrdersIndexRoute
   '/assignments/$orderId/submit': typeof AssignmentsOrderIdSubmitRoute
+  '/orders/$orderId/submit': typeof OrdersOrderIdSubmitRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/earnings'
+    | '/leaderboard'
+    | '/messages'
+    | '/notifications'
     | '/orders'
     | '/profile'
     | '/assignments/$orderId'
+    | '/orders/$orderId'
     | '/assignments/'
+    | '/orders/'
     | '/assignments/$orderId/submit'
+    | '/orders/$orderId/submit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/earnings'
-    | '/orders'
+    | '/leaderboard'
+    | '/messages'
+    | '/notifications'
     | '/profile'
     | '/assignments/$orderId'
+    | '/orders/$orderId'
     | '/assignments'
+    | '/orders'
     | '/assignments/$orderId/submit'
+    | '/orders/$orderId/submit'
   id:
     | '__root__'
     | '/'
     | '/earnings'
+    | '/leaderboard'
+    | '/messages'
+    | '/notifications'
     | '/orders'
     | '/profile'
     | '/assignments/$orderId'
+    | '/orders/$orderId'
     | '/assignments/'
+    | '/orders/'
     | '/assignments/$orderId/submit'
+    | '/orders/$orderId/submit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EarningsRoute: typeof EarningsRoute
-  OrdersRoute: typeof OrdersRoute
+  LeaderboardRoute: typeof LeaderboardRoute
+  MessagesRoute: typeof MessagesRoute
+  NotificationsRoute: typeof NotificationsRoute
+  OrdersRoute: typeof OrdersRouteWithChildren
   ProfileRoute: typeof ProfileRoute
   AssignmentsOrderIdRoute: typeof AssignmentsOrderIdRouteWithChildren
   AssignmentsIndexRoute: typeof AssignmentsIndexRoute
@@ -135,6 +208,27 @@ declare module '@tanstack/react-router' {
       path: '/earnings'
       fullPath: '/earnings'
       preLoaderRoute: typeof EarningsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orders': {
@@ -165,6 +259,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssignmentsOrderIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/orders/': {
+      id: '/orders/'
+      path: '/'
+      fullPath: '/orders/'
+      preLoaderRoute: typeof OrdersIndexRouteImport
+      parentRoute: typeof OrdersRoute
+    }
+    '/orders/$orderId': {
+      id: '/orders/$orderId'
+      path: '/$orderId'
+      fullPath: '/orders/$orderId'
+      preLoaderRoute: typeof OrdersOrderIdRouteImport
+      parentRoute: typeof OrdersRoute
+    }
     '/assignments/$orderId/submit': {
       id: '/assignments/$orderId/submit'
       path: '/submit'
@@ -172,8 +280,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssignmentsOrderIdSubmitRouteImport
       parentRoute: typeof AssignmentsOrderIdRoute
     }
+    '/orders/$orderId/submit': {
+      id: '/orders/$orderId/submit'
+      path: '/submit'
+      fullPath: '/orders/$orderId/submit'
+      preLoaderRoute: typeof OrdersOrderIdSubmitRouteImport
+      parentRoute: typeof OrdersOrderIdRoute
+    }
   }
 }
+
+interface OrdersOrderIdRouteChildren {
+  OrdersOrderIdSubmitRoute: typeof OrdersOrderIdSubmitRoute
+}
+
+const OrdersOrderIdRouteChildren: OrdersOrderIdRouteChildren = {
+  OrdersOrderIdSubmitRoute: OrdersOrderIdSubmitRoute,
+}
+
+const OrdersOrderIdRouteWithChildren = OrdersOrderIdRoute._addFileChildren(
+  OrdersOrderIdRouteChildren,
+)
+
+interface OrdersRouteChildren {
+  OrdersOrderIdRoute: typeof OrdersOrderIdRouteWithChildren
+  OrdersIndexRoute: typeof OrdersIndexRoute
+}
+
+const OrdersRouteChildren: OrdersRouteChildren = {
+  OrdersOrderIdRoute: OrdersOrderIdRouteWithChildren,
+  OrdersIndexRoute: OrdersIndexRoute,
+}
+
+const OrdersRouteWithChildren =
+  OrdersRoute._addFileChildren(OrdersRouteChildren)
 
 interface AssignmentsOrderIdRouteChildren {
   AssignmentsOrderIdSubmitRoute: typeof AssignmentsOrderIdSubmitRoute
@@ -189,7 +329,10 @@ const AssignmentsOrderIdRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EarningsRoute: EarningsRoute,
-  OrdersRoute: OrdersRoute,
+  LeaderboardRoute: LeaderboardRoute,
+  MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
+  OrdersRoute: OrdersRouteWithChildren,
   ProfileRoute: ProfileRoute,
   AssignmentsOrderIdRoute: AssignmentsOrderIdRouteWithChildren,
   AssignmentsIndexRoute: AssignmentsIndexRoute,
@@ -197,3 +340,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

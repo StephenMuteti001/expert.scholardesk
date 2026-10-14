@@ -13,11 +13,11 @@ import EmptyState from "@/components/EmptyState";
 export const Route = createFileRoute("/notifications")({
   head: () => ({
     meta: [
-      { title: "Notifications — AcademicHub Expert Portal" },
+      { title: "Notifications — ScholarDesk Expert Portal" },
       { name: "description", content: "Assignment updates, messages and payout alerts." },
-      { property: "og:title", content: "Notifications — AcademicHub Expert Portal" },
+      { property: "og:title", content: "Notifications — ScholarDesk Expert Portal" },
       { property: "og:description", content: "Assignment updates, messages and payout alerts." },
-    ],
+     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { property: "og:image", content: "https://scholardesk.pro/brand/og-image.png" }, { name: "twitter:image", content: "https://scholardesk.pro/brand/og-image.png" }],
   }),
   component: NotificationsPage,
 });

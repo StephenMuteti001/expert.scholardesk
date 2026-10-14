@@ -21,14 +21,14 @@ interface LeaderboardRow {
 export const Route = createFileRoute("/leaderboard")({
   head: () => ({
     meta: [
-      { title: "Leaderboard — AcademicHub Expert Portal" },
+      { title: "Leaderboard — ScholarDesk Expert Portal" },
       { name: "description", content: "See how your delivery record compares with other experts." },
-      { property: "og:title", content: "Leaderboard — AcademicHub Expert Portal" },
+      { property: "og:title", content: "Leaderboard — ScholarDesk Expert Portal" },
       {
         property: "og:description",
         content: "See how your delivery record compares with other experts.",
       },
-    ],
+     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { property: "og:image", content: "https://scholardesk.pro/brand/og-image.png" }, { name: "twitter:image", content: "https://scholardesk.pro/brand/og-image.png" }],
   }),
   component: LeaderboardPage,
 });

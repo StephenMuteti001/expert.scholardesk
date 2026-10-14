@@ -20,7 +20,10 @@ export async function expertRequest<T>(path: string, options: { method?: string;
     },
     ...(options.body === undefined ? {} : { body: form ? options.body as FormData : JSON.stringify(options.body) }),
   });
-  if (response.status === 401 || response.status === 403) throw new ExpertAuthRequiredError("Sign in required");
+  if (response.status === 401 || response.status === 403) {
+    if (typeof window !== "undefined") window.dispatchEvent(new Event(response.status === 401 ? "scholardesk:auth-required" : "scholardesk:access-denied"));
+    throw new ExpertAuthRequiredError(response.status === 401 ? "Sign in required" : "Access restricted");
+  }
   if (!response.ok) throw new Error(`Request failed (${response.status})`);
   if (response.status === 204) return undefined as T;
   const payload = await response.json() as T | { data: T };
