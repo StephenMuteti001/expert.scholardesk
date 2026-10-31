@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-import api, { clearAuth } from "@/lib/api";
+import api, { ApiError, clearAuth } from "@/lib/api";
 import { PORTALS } from "@/config/portals";
 import type { PortalUser } from "@/types/portal";
 
@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     country: "Kenya",
     subscription_level: "expert",
     role: "expert",
-    avatar: "My avatar" | null
+    avatar: null
   };
   const [user, setUser] = useState<PortalUser | null>(sample_user);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,9 +32,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data } = await api.get("/auth/me");
       setUser(data?.user ?? data);
-    } catch {
-      setUser(null);
-      clearAuth();
+    } catch (error) {
+      // The API rejected the session: signed out for real.
+      if (error instanceof ApiError) {
+        setUser(null);
+        clearAuth();
+      }
+      // API unreachable (network/offline): keep the sample user so the
+      // portal still previews while the backend is not reachable.
     } finally {
       setIsLoading(false);
     }

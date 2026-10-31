@@ -14,9 +14,20 @@ export const API_BASE_URL =
   (import.meta.env["VITE_API_URL"] as string | undefined) ??
   "https://api.scholardesk.pro/api/v1";
 
+/** Origin of the API host, without the /api/v1 version prefix. Used to
+ *  resolve relative file URLs (e.g. attachment download links). */
+export const API_ORIGIN = API_BASE_URL.replace(/\/api\/v\d+\/?$/, "");
+
 export const AUTH_PORTAL_URL =
   (import.meta.env["VITE_AUTH_PORTAL_URL"] as string | undefined) ??
   "https://scholardesk.pro";
+
+/** Human-readable message for any error thrown by this client. */
+export function apiErrorMessage(error: unknown, fallback = "Something went wrong"): string {
+  if (error instanceof ApiError && error.message) return error.message;
+  if (error instanceof Error && error.message) return error.message;
+  return fallback;
+}
 
 function csrfToken(): string | null {
   if (typeof document === "undefined") return null;
@@ -32,11 +43,28 @@ export class ApiError extends Error {
   }
 }
 
-export async function apiRequest<T>(
+/** Serialize request params to a query string, skipping empty values. */
+function buildQuery(params?: Record<string, unknown>): string {
+  if (!params) return "";
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null || value === "") continue;
+    search.append(key, String(value));
+  }
+  const qs = search.toString();
+  return qs ? `?${qs}` : "";
+}
+
+export async function apiRequest<T = any>(
   path: string,
-  options: { method?: string; body?: unknown; signal?: AbortSignal | undefined } = {},
+  options: {
+    method?: string;
+    body?: unknown;
+    params?: Record<string, unknown>;
+    signal?: AbortSignal | undefined;
+  } = {},
 ): Promise<T> {
-  const { method = "GET", body, signal } = options;
+  const { method = "GET", body, params, signal } = options;
   const isForm = typeof FormData !== "undefined" && body instanceof FormData;
 
   const headers: Record<string, string> = {};
@@ -44,7 +72,7 @@ export async function apiRequest<T>(
   const token = csrfToken();
   if (token) headers["X-CSRF-TOKEN"] = token;
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(`${API_BASE_URL}${path}${buildQuery(params)}`, {
     method,
     credentials: "include",
     headers,
@@ -72,11 +100,18 @@ export async function apiRequest<T>(
   return (await response.json()) as T;
 }
 
+/** Clears any locally cached auth state (cookie sessions live server-side). */
+export function clearAuth(): void {
+  if (typeof localStorage === "undefined") return;
+  localStorage.removeItem("scholardesk:user");
+}
+
 export const api = {
-  get: <T>(path: string, signal?: AbortSignal) => apiRequest<T>(path, { signal }),
-  post: <T>(path: string, body?: unknown) => apiRequest<T>(path, { method: "POST", body }),
-  patch: <T>(path: string, body?: unknown) => apiRequest<T>(path, { method: "PATCH", body }),
-  delete: <T>(path: string) => apiRequest<T>(path, { method: "DELETE" }),
+  get: <T = any>(path: string, options: { params?: Record<string, unknown>; signal?: AbortSignal } = {}) =>
+    apiRequest<T>(path, { ...options }),
+  post: <T = any>(path: string, body?: unknown) => apiRequest<T>(path, { method: "POST", body }),
+  patch: <T = any>(path: string, body?: unknown) => apiRequest<T>(path, { method: "PATCH", body }),
+  delete: <T = any>(path: string) => apiRequest<T>(path, { method: "DELETE" }),
 };
 
 export default api;
