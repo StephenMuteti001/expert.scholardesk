@@ -2,7 +2,7 @@
  * ScholarDesk API client.
  *
  * Preserves the transport contract of the existing platform:
- *  - same base URL (VITE_API_URL, default https://api.academichubpro.com/api/v1)
+ *  - same base URL (VITE_API_URL, default https://api.scholardesk.pro/api/v1)
  *  - cookie based sessions (credentials: "include")
  *  - CSRF double-submit using the `csrf_access_token` cookie -> `X-CSRF-TOKEN`
  *  - 401/403 redirect back to the auth portal
@@ -12,7 +12,7 @@
 
 export const API_BASE_URL =
   (import.meta.env["VITE_API_URL"] as string | undefined) ??
-  "https://api.academichubpro.com/api/v1";
+  "https://api.scholardesk.pro/api/v1";
 
 export const AUTH_PORTAL_URL =
   (import.meta.env["VITE_AUTH_PORTAL_URL"] as string | undefined) ??

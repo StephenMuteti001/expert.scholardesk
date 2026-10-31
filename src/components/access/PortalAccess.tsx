@@ -46,7 +46,7 @@ export function PortalAccess({ children }: { children: ReactNode }) {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-6 py-12">
-      <section role="alert" aria-live="assertive" className="w-full max-w-md border-t-2 border-primary pt-8 text-foreground">
+      <section role="alert" aria-live="assertive" className="w-full max-w-md border-primary pt-8 text-foreground">
         <LockKeyhole aria-hidden="true" className="mb-5 size-9 text-primary" />
         <p className="mb-2 text-sm font-semibold text-primary">ScholarDesk · Expert portal</p>
         <h1 className="font-display text-2xl font-semibold">{title}</h1>
