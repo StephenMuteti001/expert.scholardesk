@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { PortalAccess } from "@/components/access/PortalAccess";
 import { initials } from "@/lib/format";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -202,7 +203,7 @@ export default function AppShell({
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-28 sm:px-6">{children}</main>
+        <main className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-28 sm:px-6"><PortalAccess>{children}</PortalAccess></main>
       </div>
     </div>
   );

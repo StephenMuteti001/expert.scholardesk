@@ -20,7 +20,7 @@ export const API_ORIGIN = API_BASE_URL.replace(/\/api\/v\d+\/?$/, "");
 
 export const AUTH_PORTAL_URL =
   (import.meta.env["VITE_AUTH_PORTAL_URL"] as string | undefined) ??
-  "https://scholardesk.pro";
+  "https://auth.scholardesk.pro";
 
 /** Human-readable message for any error thrown by this client. */
 export function apiErrorMessage(error: unknown, fallback = "Something went wrong"): string {

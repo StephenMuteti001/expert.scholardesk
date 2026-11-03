@@ -11,7 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { PortalAccess } from "@/components/access/PortalAccess";
+import { PortalSessionProvider } from "@/components/access/portal-session";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SupportChatProvider } from "@/components/portal/SupportChatProvider";
 import { Toaster } from "@/components/ui/sonner";
@@ -129,11 +129,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <PortalSessionProvider>
       <SupportChatProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <PortalAccess><Outlet /></PortalAccess>
+        <Outlet />
         <Toaster position="top-right" />
       </SupportChatProvider>
+      </PortalSessionProvider>
     </QueryClientProvider>
   );
 }

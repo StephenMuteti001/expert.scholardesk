@@ -14,18 +14,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // const [user, setUser] = useState<PortalUser | null>(null);
-  const sample_user = {
-    id: 123,
-    full_name: "Stephen Muteti",
-    email: "stephen@gmail.com",
-    phone: "0757090042",
-    country: "Kenya",
-    subscription_level: "expert",
-    role: "expert",
-    avatar: null
-  };
-  const [user, setUser] = useState<PortalUser | null>(sample_user);
+  const [user, setUser] = useState<PortalUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const load = async () => {
@@ -38,8 +27,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
         clearAuth();
       }
-      // API unreachable (network/offline): keep the sample user so the
-      // portal still previews while the backend is not reachable.
     } finally {
       setIsLoading(false);
     }
